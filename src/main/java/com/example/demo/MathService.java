@@ -30,17 +30,28 @@ public class MathService {
         return result;
     }
 
-//    @PostMapping("/sum")
-//    public String sum(@RequestParam Map<String,String> numbers) {
-//        String numberSentence = "";
-//        int sum = 0;
-//        numbers.forEach((k, v) -> {
-//            System.out.println(k + ": " + v);
-//        });
-//
-//        return numberSentence;
-//
-//    }
+    @PostMapping("/math/sum")
+   public String postSum(@RequestParam(value="n", required=true) double[] nums){
+        String returnSentence ="";
+        int sum = 0;
+        int i = 0;
+
+        for(double num: nums){
+            i++;
+            sum += num;
+            if(i < nums.length) {
+                returnSentence += num + " + ";
+            }
+            else{
+                returnSentence += " " + num;
+            }
+        }
+
+        return (returnSentence + " = " + sum);
+
+
+
+    }
 
 
 }
