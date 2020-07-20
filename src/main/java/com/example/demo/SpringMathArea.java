@@ -7,25 +7,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 public class SpringMathArea{
 
 
 
 
-    @PostMapping("/math/area/?type={type}&radius={radius}&width={width}&height={height}") // matches /individual-example/foo/bar
-    public String getIndividualParams(@RequestParam("type") String type, @RequestParam("radius") String radius,@RequestParam("width") String width,
-                                      @RequestParam("height") String height){
+    @PostMapping("/math/area") // matches /individual-example/foo/bar
+    public String getAreaParams(@RequestParam Map<String, String> formData){
 
-        if(type.equals("circle")){
-            if(!radius.equals(null)){
-                return ("Area of a circle with a radius of " + radius +  " is " + Math.PI*2*Integer.parseInt(radius));
+        if(formData.get("type").equals("circle")){
+            if(!formData.get("radius").equals(null)){
+                return ("Area of a circle with a radius of " + formData.get("radius") +  " is " + Math.PI*2*Integer.parseInt(formData.get("radius")));
             } else {
                 return("INVALID");
             }
-        } else if (type.equals("rectangle")){
-            if(!width.equals(null) && !height.equals(null)){
-                return ("Area of a " + height +"x"+ width + " rectangle is " + Integer.parseInt(width) * Integer.parseInt(height));
+        } else if (formData.get("type").equals("rectangle")){
+            if(!formData.get("width").equals(null) && !formData.get("height").equals(null)){
+                return ("Area of a " + formData.get("height") +"x"+ formData.get("width") + " rectangle is " +
+                        Integer.parseInt(formData.get("width")) *
+
+                        Integer.parseInt(formData.get("height")));
             } else {
                 return ("INVALID");
             }
