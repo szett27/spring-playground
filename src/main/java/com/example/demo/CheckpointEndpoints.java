@@ -1,10 +1,9 @@
 package com.example.demo;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class CheckpointEndpoints {
@@ -56,5 +55,59 @@ public class CheckpointEndpoints {
         redacted = String.join(" ", sentence);
         return redacted;
     }
+
+
+    //checkpoint #3 - Encode
+    @PostMapping("/encode")
+    public String encode(@RequestParam Map<String, String> formData){
+        String[] original = formData.get("original").split(" ");
+        String encoder = formData.get("key");
+        String abcs = "abcdefghijklmnopqrstuvwzyz";
+        Map<String, String> coder = null;
+        String encoded = "";
+
+
+        //Map Abcs to encoder
+        for(int i  = 0; i<abcs.length();i++){
+            for(int j = 0; j < encoder.length(); j++){
+                coder.put(abcs.substring(i), encoder.substring(j));
+            }
+        }
+
+        //encode string
+        for(String word: original){
+            String[] letters = word.split("");
+            for(int k =0; k < letters.length; k++) {
+                //coded value
+                letters[k] = coder.get(word.substring(k));
+            }
+            encoded += String.join("", letters);
+        }
+        return encoded;
+    }
+
+    //checkpoint #4 - SED
+    @PostMapping("/s/{find}/{replacement}")
+    public String replace(@PathVariable("find") String find,
+                          @PathVariable("replacement") String replacement,
+                          @RequestBody String body){
+
+        String replaced = "";
+        String[] split = body.split(" ");
+
+        for(String word: split){
+            if(word.equals(find)){
+                word = replacement;
+            }
+        }
+
+        replaced = String.join(" ", split);
+
+
+        return replaced;
+    }
+
+
+
 
 }
